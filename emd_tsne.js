@@ -13,6 +13,12 @@ var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
+var fisheye = d3.fisheye.circular().radius(60).distortion(6);
+
+var cursorCircle = emd_tsne.append("circle")
+                           .attr("r", 60)
+                           .style("stroke", "red")    
+                           .style("fill", "none");;
 
 d3.json("./tsnescale_four_good.json", function(data){
   console.log(data);
@@ -57,7 +63,7 @@ d3.json("./tsnescale_four_good.json", function(data){
   .attr("id", function(d){ return d["idx"]; })
   .attr("cx", function (d) { return x(d["emd_pos"][0]) })
   .attr("cy", function (d) { return y(d["emd_pos"][1]) })
-  .attr("r", 3)
+  .attr("r", 2.5)
   .style("fill", function(d){ return colorScale(d["label"]) })
   .style("opacity", 0.6)
   .on("mouseover", function(d) {    
@@ -79,6 +85,28 @@ d3.json("./tsnescale_four_good.json", function(data){
     aud.load();
     // aud.muted = true;
     aud.play();
+  });
+
+
+  // add a new property that saves the coordinates of circles
+  scatter.each(function(d) {
+    d.coors = { "x": x(d["emd_pos"][0]),
+                "y": y(d["emd_pos"][1]) 
+              };
+  });
+
+  // add mousemove events: magnifier and circle around cursor
+  emd_tsne.on("mousemove", function(){
+    fisheye.focus(d3.mouse(this));
+    // update curose cirle location
+    cursorCircle.attr("cx", d3.mouse(this)[0])
+          .attr("cy", d3.mouse(this)[1]);
+    // magnifier effect
+    scatter.each(function(d) { d.fisheye = fisheye(d.coors); })
+        .attr("cx", function(d) { return d.fisheye.x; })
+        .attr("cy", function(d) { return d.fisheye.y; })
+        .attr("r", function(d) { return d.fisheye.z*2.5; });
+
   });
 
   // var legend = emd_tsne.append("g")
@@ -112,7 +140,6 @@ d3.json("./tsnescale_four_good.json", function(data){
     //         this.addEventListener("timeupdate", pausing_function, false);
     //     }
     // }
-  
 
 });
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="static/js/fisheye.js"></script>>
 
 <style>
 body {
@@ -37,6 +38,12 @@ div.tooltip {
   border: 0px;    
   border-radius: 8px;     
   pointer-events: none;     
+}
+
+#exp {
+  width: 1000px;
+  height: 1000px;
+  border: solid 1px;
 }
 </style>
 
@@ -88,10 +95,9 @@ div.tooltip {
 <script src="note_parallel.js"></script>
 
 <div id="heatmap"></div>
+
 </body>
 <script src="org_tsne.js"></script>
 <script src="emd_tsne.js"></script>
 <script src="org_pca.js"></script>
 <script src="emd_pca.js"></script>
-
-<!-- <script src="note_heatmap.js"></script> -->
