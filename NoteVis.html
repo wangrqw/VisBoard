@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<style>
+body {
+  background: #f2f2f2;
+}
+.tsne .column {
+  float: left;
+  width: 49.5%;
+  text-align: center;
+  font-size:30px;
+  font-family: Arial;
+}
+.pca .column {
+  float: left;
+  width: 49.5%;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+div.tooltip { 
+  position: absolute;     
+  text-align: center;     
+  width: 80px;          
+  height: 21px;         
+  padding: 1px;       
+  font: 20px sans-serif;    
+  background: lightsteelblue; 
+  border: 0px;    
+  border-radius: 8px;     
+  pointer-events: none;     
+}
+</style>
+
+
+<body onload="scale(true)">
+<div class="tsne" >
+  <div id="org_tsne" class="column" style="border: 1px solid black;" font-size="30px">t-SNE projection on original note samples</div>
+  <div id="emd_tsne" class="column" style="border: 1px solid black;" text-font="30px">t-SNE projection on note latent vectors</div>
+  <!-- <div><audio id="note" controls></audio></div> -->
+</div>
+
+<div class="pca">
+  <div id="org_pca" class="column" style="border: 1px solid black;">PCA on notes</div>
+  <div id="emd_pca" class="column" style="border: 1px solid black;">PCA on note latents</div>
+</div>
+
+<div class="parallel">Parallel Coordinate<br>
+  Instruments
+  <input type="radio" name="instr" id="D1_e" onclick="changeInstr()" checked>Erhu
+  <input type="radio" name="instr" id="D1_z" onclick="changeInstr()">Zheng<br>
+
+  Scale
+  <input type="radio" name="scale" onchange=scale(true) checked>full scale
+  <input type="radio" name="scale" onchange=scale(false) >indivisual scale<br>
+  <div>Ocave 4
+    <input type="checkbox" id="ckbx0" onclick=checkbox(0) name="do" unchecked>Do
+    <input type="checkbox" id="ckbx1" onclick=checkbox(1) name="re" unchecked>Re
+    <input type="checkbox" id="ckbx2" onclick=checkbox(2) name="mi" unchecked>Mi
+    <input type="checkbox" id="ckbx3" onclick=checkbox(3) name="fa" unchecked>Fa
+    <input type="checkbox" id="ckbx4" onclick=checkbox(4) name="so" unchecked>So
+    <input type="checkbox" id="ckbx5" onclick=checkbox(5) name="la" unchecked>La
+    <input type="checkbox" id="ckbx6" onclick=checkbox(6) name="ti" unchecked>Ti
+  </div>
+    
+  <div>Ocave 5
+    <input type="checkbox" id="ckbx7" onclick=checkbox(7) name="do" unchecked>Do
+    <input type="checkbox" id="ckbx8" onclick=checkbox(8) name="re" unchecked>Re
+    <input type="checkbox" id="ckbx9" onclick=checkbox(9) name="mi" unchecked>Mi
+    <input type="checkbox" id="ckbx10" onclick=checkbox(10) name="fa" unchecked>Fa
+    <input type="checkbox" id="ckbx11" onclick=checkbox(11) name="so" unchecked>So
+    <input type="checkbox" id="ckbx12" onclick=checkbox(12) name="la" unchecked>La
+    <input type="checkbox" id="ckbx13" onclick=checkbox(13) name="ti" unchecked>Ti
+  </div>
+    
+  <div class="column">Ocave 6
+    <input type="checkbox" id="ckbx14" onclick=checkbox(14) name="do" unchecked>Do
+  </div>
+</div>
+<script src="note_parallel.js"></script>
+
+<div id="heatmap"></div>
+</body>
+<script src="org_tsne.js"></script>
+<script src="emd_tsne.js"></script>
+<script src="org_pca.js"></script>
+<script src="emd_pca.js"></script>
+
+<!-- <script src="note_heatmap.js"></script> -->
