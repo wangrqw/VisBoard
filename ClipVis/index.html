@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <title>Vis4TCM</title>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+    <div class = "container-fluid">
+      <a class="navbar-brand" href="#">Vis4TCM</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" href="../ClipVis/index.html">Clips Vis</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="../NoteVis/index.html">Note Vis</a>
+          </li>
+          </ul>
+      </div>
+      <div>
+        <form method="POST" enctype="multipart/form-data">
+          <div class="custom-file">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+            <input type="file" class="custom-file-input" id="customFile">
+          </div>
+        </form>
+        <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          console.log(fileName);
+          draw_tsne(fileName);
+          draw_pca(fileName);
+          draw_umap(fileName);
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        </script>
+      </div>
+    </div>
+  </nav>
+
+</head>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="../static/js/fisheye.js"></script>
+
+<style>
+body {
+  background: #f2f2f2;
+}
+.no-gutters {
+  margin-right: 10;
+  margin-left: 10;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+div.tooltip { 
+  position: absolute;     
+  text-align: center;     
+  width: 80px;          
+  height: 21px;         
+  padding: 1px;       
+  font: 20px sans-serif;    
+  background: lightsteelblue; 
+  border: 0px;    
+  border-radius: 8px;     
+  pointer-events: none;     
+}
+
+#exp {
+  width: 1000px;
+  height: 1000px;
+  border: solid 1px;
+}
+</style>
+
+<body>
+  <div class="container-fluid bg-muted text-secondary">
+    <div class="row no-gutters">
+
+      <div class="col-sm-6">
+        t-SNE Projection Overview
+        <div id="tsne" style="border: 1px solid darkslategray;" font-size="30px"></div>
+        <!-- <div><audio id="note" controls></audio></div> -->
+      </div>
+
+      <div class="col-sm-3">
+          <div id="tsne0" style="border: 1px solid darkslategray;" font-size="10px">t-SNE on BambooFlute</div>
+          <div id="tsne1" style="border: 1px solid darkslategray;" font-size="10px">t-SNE on Erhu</div>
+      </div>
+      <div class="col-sm-3">
+          <div id="tsne2" style="border: 1px solid darkslategray;" font-size="10px">t-SNE on Pipa</div>
+          <div id="tsne3" style="border: 1px solid darkslategray;" font-size="10px">t-SNE on Zheng</div>
+      </div>
+
+      <script src="tsne.js"></script>
+
+    </div>
+    
+    <div class="row no-gutters">
+      <div class="col-sm-6">
+        PCA Projection Overview
+        <div id="pca" style="border: 1px solid gray;" font-size="30px"></div>
+      </div>
+  
+      <div class="col-sm-3">
+          <div id="pca0" style="border: 1px solid gray;" font-size="10px">PCA on BambooFlute</div>
+          <div id="pca1" style="border: 1px solid gray;" font-size="10px">PCA on Erhu</div>
+      </div>
+      <div class="col-sm-3">
+          <div id="pca2" style="border: 1px solid gray;" font-size="10px">PCA on Pipa</div>
+          <div id="pca3" style="border: 1px solid gray;" font-size="10px">PCA on Zheng</div>
+      </div>
+  
+      <script src="pca.js"></script>
+    </div>
+
+    <div class="row no-gutters">
+      <div class="col-sm-6">
+        UMAP Projection Overview
+        <div id="umap" style="border: 1px solid gray;" font-size="30px"></div>
+      </div>
+  
+      <div class="col-sm-3">
+          <div id="umap0" style="border: 1px solid gray;" font-size="10px">UMAP on BambooFlute</div>
+          <div id="umap1" style="border: 1px solid gray;" font-size="10px">UMAP on Erhu</div>
+      </div>
+
+      <div class="col-sm-3">
+          <div id="umap2" style="border: 1px solid gray;" font-size="10px">UMAP on Pipa</div>
+          <div id="umap3" style="border: 1px solid gray;" font-size="10px">UMAP on Zheng</div>
+      </div>
+  
+      <script src="umap.js"></script>
+    </div>
+  </div>
+
+<!-- <div class="parallel">Parallel Coordinate<br>
+  Instruments
+  <input type="radio" name="instr" id="D1_e" onclick="changeInstr()" checked>Erhu
+  <input type="radio" name="instr" id="D1_z" onclick="changeInstr()">Zheng<br>
+
+  Scale
+  <input type="radio" name="scale" onchange=scale(true) checked>full scale
+  <input type="radio" name="scale" onchange=scale(false) >indivisual scale<br>
+  <div>Ocave 4
+    <input type="checkbox" id="ckbx0" onclick=checkbox(0) name="do" unchecked>Do
+    <input type="checkbox" id="ckbx1" onclick=checkbox(1) name="re" unchecked>Re
+    <input type="checkbox" id="ckbx2" onclick=checkbox(2) name="mi" unchecked>Mi
+    <input type="checkbox" id="ckbx3" onclick=checkbox(3) name="fa" unchecked>Fa
+    <input type="checkbox" id="ckbx4" onclick=checkbox(4) name="so" unchecked>So
+    <input type="checkbox" id="ckbx5" onclick=checkbox(5) name="la" unchecked>La
+    <input type="checkbox" id="ckbx6" onclick=checkbox(6) name="ti" unchecked>Ti
+  </div>
+    
+  <div>Ocave 5
+    <input type="checkbox" id="ckbx7" onclick=checkbox(7) name="do" unchecked>Do
+    <input type="checkbox" id="ckbx8" onclick=checkbox(8) name="re" unchecked>Re
+    <input type="checkbox" id="ckbx9" onclick=checkbox(9) name="mi" unchecked>Mi
+    <input type="checkbox" id="ckbx10" onclick=checkbox(10) name="fa" unchecked>Fa
+    <input type="checkbox" id="ckbx11" onclick=checkbox(11) name="so" unchecked>So
+    <input type="checkbox" id="ckbx12" onclick=checkbox(12) name="la" unchecked>La
+    <input type="checkbox" id="ckbx13" onclick=checkbox(13) name="ti" unchecked>Ti
+  </div>
+    
+  <div class="column">Ocave 6
+    <input type="checkbox" id="ckbx14" onclick=checkbox(14) name="do" unchecked>Do
+  </div>
+</div>
+<script src="note_parallel.js"></script> -->
+<footer>&copy; Copyright 2020 Runqi Wang @ OSU</footer>
+</body>
