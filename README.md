@@ -4,7 +4,16 @@
 ## Overview
 Data loading is on the right corner. When it is loaded the overveiw page displays a parallel plot to give a glance of the data imported.
 
-## Data 
+### Home
+Go back to the Overview
+
+### ClipVis
+Go to ClipVis
+
+### NoteVis
+Go to NoteVis
+
+### Data Loading 
 Formmating is as following:
 | Key | Description|
 |---- | -----------|
@@ -17,6 +26,7 @@ Formmating is as following:
 | 'm'     | symbol/marker index|
 
 **Note**: bug to fix -- the data must be selected from the data folder; otherwise, the path is incorrect.
+
 
 ## Clip Vis
 ### t-SNE View
