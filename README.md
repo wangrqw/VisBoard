@@ -16,7 +16,7 @@ Formmating is as following:
 | 'c'     | color index|
 | 'm'     | symbol/marker index|
 
-
+**Note**: bug to fix -- the data must be selected from the data folder; otherwise, the path is incorrect.
 
 ## Clip Vis
 ### t-SNE View
