@@ -1,9 +1,12 @@
 # Visualization Board
   for music~
+  
+## Overview
+Data loading is on the right corner. When it is loaded the overveiw page displays a parallel plot to give a glance of the data imported.
 
 ## Data 
 Formmating is as following:
-| key | description|
+| Key | Description|
 |---- | -----------|
 | 'id'    | data point id |
 | 'embed' | latent vector |
@@ -12,5 +15,15 @@ Formmating is as following:
 | 'umap'  | coordinate of umap projection|
 | 'c'     | color index|
 | 'm'     | symbol/marker index|
+
+
+
+## Clip Vis
+### t-SNE View
+### PCA View
+### UMAP View
+
+## Note Vis
+to be uploaded
 
  
