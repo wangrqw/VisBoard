@@ -2,6 +2,8 @@
   for music~
 
 ## Data Formatting
+| key | description|
+|---- | -----------|
 | 'id'    | : data point id |
 | 'embed' | : latent vector |
 'tsne'  : coordinate of tsne projection
