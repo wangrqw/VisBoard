@@ -1,7 +1,8 @@
 # Visualization Board
   for music~
 
-## Data Formatting
+## Data 
+Formmating is as following:
 | key | description|
 |---- | -----------|
 | 'id'    | data point id |
